@@ -1,6 +1,6 @@
 # Learning Subpocket Prototypes for Generalizable Structure-based Drug Design
 Official Pytorch implementation of ICML'23 paper "Learning Subpocket Prototypes for Generalizable Structure-based Drug Design"
-(https://arxiv.org/abs/2110.00987). 
+(https://arxiv.org/abs/2305.13997). 
 ## Install conda environment via conda yaml file
 ```bash
 conda env create -f druggps_env.yaml
