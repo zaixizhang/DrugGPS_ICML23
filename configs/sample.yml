@@ -1,1 +1,29 @@
+dataset:
+  name: pl
+  path: ./data/crossdocked_pocket10
+  split: ./data/seq_split.pt
 
+model:
+  hidden_channels: 256
+  subpocket_motif: True
+  num_prototypes: 128
+  encoder:
+    name: hierGT
+    hidden_channels: 256
+    edge_channels: 64
+    key_channels: 128
+    num_heads: 4
+    num_interactions: 6
+    cutoff: 10.0
+    knn: 32
+    num_filters: 128
+
+sample:
+  seed: 2023
+  num_samples: 100
+  beam_size: 10
+  logp_thres: -.inf
+  num_retry: 5
+  max_steps: 12
+  batch_size: 10
+  num_workers: 4
