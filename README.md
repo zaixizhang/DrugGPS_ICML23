@@ -3,6 +3,11 @@ Official Pytorch implementation of ICML'23 paper "Learning Subpocket Prototypes 
 (https://arxiv.org/abs/2305.13997). 
 <div align=center><img src="https://github.com/zaixizhang/DrugGPS_ICML23/blob/main/druggps.png" width="700"/></div>
 
+## Previous work
+- DrugGPS is based on our previous work on structure-based drug design: *Molecule Generation For Target Protein Binding With Structural Motifs* (ICML 2023)
+  - Code: https://github.com/zaixizhang/FLAG
+  - Paper: https://openreview.net/forum?id=Rq13idF0F73
+
 
 ## Install conda environment via conda yaml file
 ```bash
