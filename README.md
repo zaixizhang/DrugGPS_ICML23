@@ -31,3 +31,12 @@ python train.py
 python sample.py
 ```
 
+## Reference
+```
+@article{zhang2023learning,
+  title={Learning Subpocket Prototypes for Generalizable Structure-based Drug Design},
+  author={Zhang, Zaixi and Liu, Qi},
+  journal={ICML},
+  year={2023}
+}
+```
