@@ -36,6 +36,11 @@ python train.py
 python sample.py
 ```
 
+## Generated Molecules for CrossDocked dataset
+The generated molecules for 100 protein targets are stored in druggps.pt
+
+The index file is index_test.pkl
+
 ## Reference
 ```
 @article{zhang2023learning,
