@@ -1,7 +1,8 @@
 model:
+  checkpoint: './checkpoints/checkpoint.pt'
   hidden_channels: 256
   subpocket_motif: True
-  num_prototypes: 128
+  num_prototypes: 56
   encoder:
     name: hierGT
     hidden_channels: 256
@@ -24,7 +25,7 @@ train:
   val_freq: 10000
   pos_noise_std: 0.1
   max_grad_norm: 50
-  num_prototypes: 128
+  num_prototypes: 56
   optimizer:
     type: adam
     lr: 1.e-4
