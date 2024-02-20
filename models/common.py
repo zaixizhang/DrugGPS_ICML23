@@ -248,8 +248,8 @@ def compose_context_stable(h_protein, h_ligand, pos_protein, pos_ligand, batch_p
         h_ctx += [h_protein[mask_p], h_ligand[mask_l]]
         pos_ctx += [pos_protein[mask_p], pos_ligand[mask_l]]
         mask_protein += [
-            torch.ones([batch_p.size(0)], device=batch_p.device, dtype=torch.bool),
-            torch.zeros([batch_l.size(0)], device=batch_l.device, dtype=torch.bool),
+            torch.ones([batch_p.size(0)], device=h_protein.device, dtype=torch.bool),
+            torch.zeros([batch_l.size(0)], device=h_protein.device, dtype=torch.bool),
         ]
 
     batch_ctx = torch.cat(batch_ctx, dim=0)

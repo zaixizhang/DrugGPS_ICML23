@@ -37,12 +37,14 @@ def list_filter(a,b):
     return filter
 
 
-def rand_rotate(dir, ref, pos, alpha=None):
+def rand_rotate(dir, ref, pos, alpha=None, device=None):
+    if device is None:
+        device = 'cpu'
     dir = dir/torch.norm(dir)
     if alpha is None:
-        alpha = torch.randn(1)
+        alpha = torch.randn(1).to(device)
     n_pos = pos.shape[0]
-    sin, cos = torch.sin(alpha), torch.cos(alpha)
+    sin, cos = torch.sin(alpha).to(device), torch.cos(alpha).to(device)
     K = 1 - cos
     M = torch.dot(dir, ref)
     nx, ny, nz = dir[0], dir[1], dir[2]
@@ -53,8 +55,8 @@ def rand_rotate(dir, ref, pos, alpha=None):
          (y0 - ny * M) * K + (nx * z0 - nz * x0) * sin,
          nx * nz * K - ny * sin, ny * nz * K + nx * sin, nz ** 2 * K + cos,
          (z0 - nz * M) * K + (ny * x0 - nx * y0) * sin,
-         0, 0, 0, 1]).reshape(4, 4)
-    pos = torch.cat([pos.t(), torch.ones(n_pos).unsqueeze(0)], dim=0)
+         0, 0, 0, 1], device=device).reshape(4, 4)
+    pos = torch.cat([pos.t(), torch.ones(n_pos, device=device).unsqueeze(0)], dim=0)
     rotated_pos = torch.mm(T, pos)[:3]
     return rotated_pos.t()
 
@@ -94,7 +96,7 @@ def kabsch_torch(A, B, C):
     B_c = B - b_mean
     # Covariance matrix
     H = torch.matmul(A_c.transpose(0,1), B_c)  # [B, 3, 3]
-    U, S, V = torch.svd(H)
+    U, S, V = torch.linalg.svd(H)
     # Rotation matrix
     R = torch.matmul(V, U.transpose(0,1))  # [B, 3, 3]
     # Translation vector

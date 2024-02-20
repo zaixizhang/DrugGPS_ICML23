@@ -1,12 +1,12 @@
 import sys
-sys.path.append("..")
+#sys.path.append("..")
 import rdkit
 import rdkit.Chem as Chem
 import copy
 import pickle
 from tqdm.auto import tqdm
 import numpy as np
-from chemutils import get_clique_mol, tree_decomp, get_mol, get_smiles, set_atommap, get_clique_mol_simple
+from .chemutils import get_clique_mol, tree_decomp, get_mol, get_smiles, set_atommap, get_clique_mol_simple
 from collections import defaultdict
 
 
@@ -23,10 +23,13 @@ class Vocab(object):
         #self.slots = [get_slots(smiles) for smiles in self.vocab]
 
     def get_index(self, smiles):
-        return self.vmap[smiles]
+        if smiles in self.vmap.keys():
+            return self.vmap[smiles]
+        else:
+            return 0
 
     def get_smiles(self, idx):
-        return self.vocab[idx]
+        return self.vocab[idx%len(self.vocab)]
 
     def get_slots(self, idx):
         return copy.deepcopy(self.slots[idx])
@@ -97,7 +100,7 @@ class MolTreeNode(object):
 
 
 class MolTree(object):
-    def __init__(self, mol, reference):
+    def __init__(self, mol, reference=None):
         self.smiles = Chem.MolToSmiles(mol)
         self.mol = mol
         self.num_rotatable_bond = 0

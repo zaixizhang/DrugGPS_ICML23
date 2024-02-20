@@ -40,7 +40,7 @@ class ProteinFeatures(nn.Module):
         # Distance radial basis function
         D_min, D_max, D_count = 0., 20., self.num_rbf
         #D_mu = torch.linspace(D_min, D_max, D_count).cuda()
-        D_mu = torch.linspace(D_min, D_max, D_count)
+        D_mu = torch.linspace(D_min, D_max, D_count).to(D.device)
         D_mu = D_mu.view([1,1,1,-1])
         D_sigma = (D_max - D_min) / D_count
         D_expand = torch.unsqueeze(D, -1)

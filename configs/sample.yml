@@ -4,6 +4,7 @@ dataset:
   split: ./data/seq_split.pt
 
 model:
+  checkpoint: './checkpoints/checkpoint.pt'
   hidden_channels: 256
   subpocket_motif: True
   num_prototypes: 128
@@ -19,11 +20,11 @@ model:
     num_filters: 128
 
 sample:
-  seed: 2023
+  seed: 2025
   num_samples: 100
   beam_size: 10
   logp_thres: -.inf
   num_retry: 5
-  max_steps: 12
+  max_steps: 9
   batch_size: 10
   num_workers: 4

@@ -36,7 +36,7 @@ class DrugGPS(Module):
         self.comb_head = GNN_graphpred(num_layer=3, emb_dim=config.hidden_channels, JK='last',
                                        drop_ratio=0.5, graph_pooling='mean', gnn_type='gin')
 
-        self.motif_mlp = MLP(in_dim=config.hidden_channels * 3, out_dim=config.hidden_channels, num_layers=1)
+        self.motif_mlp = MLP(in_dim=config.hidden_channels * 3, out_dim=config.hidden_channels, num_layers=2)
         self.alpha_mlp = MLP(in_dim=config.hidden_channels * 3, out_dim=1, num_layers=2)
         self.focal_mlp = MLP(in_dim=config.hidden_channels, out_dim=1, num_layers=1)
         self.dist_mlp = MLP(in_dim=protein_atom_feature_dim + ligand_atom_feature_dim, out_dim=1, num_layers=2)
@@ -79,7 +79,7 @@ class DrugGPS(Module):
         residue_emb[:added.shape[0]] = added
 
         #query global graph
-        node_weight, motif_weight, global_weight = 0.8, 0.7, 1.5
+        node_weight, motif_weight, global_weight = 1.0, 1.5, 0.5
         edge_index, edge_attr, node_feat = self.mgraph.output(residue_emb)
         residue_emb = self.WeightGNN(node_feat, self.embedding.weight, edge_index, edge_attr)[:residue_emb.shape[0]]
 
@@ -94,9 +94,9 @@ class DrugGPS(Module):
         preds = torch.cat([select_pool[i][index[i]].unsqueeze(0) for i in range(len(index))])
         return preds
 
-    def forward_attach(self, mol_list, next_motif_smiles):
+    def forward_attach(self, mol_list, next_motif_smiles, device):
         cand_mols, cand_batch, new_atoms, one_atom_attach, intersection, attach_fail = chemutils.assemble(mol_list, next_motif_smiles)
-        graph_data = Batch.from_data_list([chemutils.mol_to_graph_data_obj_simple(mol) for mol in cand_mols])
+        graph_data = Batch.from_data_list([chemutils.mol_to_graph_data_obj_simple(mol) for mol in cand_mols]).to(device)
         comb_pred = self.comb_head(graph_data.x, graph_data.edge_index, graph_data.edge_attr, graph_data.batch).reshape(-1)
         slice_idx = torch.cat([torch.tensor([0]), torch.cumsum(cand_batch.bincount(), dim=0)], dim=0)
         # select max score

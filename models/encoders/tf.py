@@ -142,7 +142,7 @@ class AAEmbedding(nn.Module):
         ALPHABET = ['#', 'A', 'R', 'N', 'D', 'C', 'Q', 'E', 'G', 'H', 'I', 'L', 'K', 'M', 'F', 'P', 'S', 'T', 'W', 'Y','V']
         self.embedding = torch.tensor([
             [self.hydropathy[aa], self.volume[aa] / 100, self.charge[aa], self.polarity[aa], self.acceptor[aa], self.donor[aa]]
-            for aa in ALPHABET])#.cuda(4)
+            for aa in ALPHABET]).cuda(0)
 
     def to_rbf(self, D, D_min, D_max, stride):
         D_count = int((D_max - D_min) / stride)
@@ -323,7 +323,7 @@ class HierEncoder(Module):
         self.features = ProteinFeatures(top_k=8)
         self.W_v = nn.Linear(hidden_channels+self.residue_feat.dim(), hidden_channels, bias=True)
         self.W_e = nn.Linear(self.features.feature_dimensions, hidden_channels, bias=True)
-        self.residue_encoder_layers = nn.ModuleList([TransformerLayer(hidden_channels, dropout=0.1) for _ in range(3)])
+        self.residue_encoder_layers = nn.ModuleList([TransformerLayer(hidden_channels, dropout=0.1) for _ in range(2)])
 
 
     @property
@@ -341,7 +341,6 @@ class HierEncoder(Module):
 
         if node_level:
             return h
-
         E, residue_edge_index = self.features(X, S_id, residue_batch)
         h_protein = h[mask]
         V = torch.cat([self.residue_feat(R), scatter_sum(h_protein, atom2residue, dim=0)], dim=-1)
