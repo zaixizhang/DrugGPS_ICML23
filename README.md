@@ -37,9 +37,9 @@ python sample.py
 ```
 
 ## Generated Molecules for CrossDocked dataset
-The generated molecules for 100 protein targets are stored in druggps.pt
+The generated molecules for 100 protein targets are stored in [druggps.pt](https://github.com/zaixizhang/DrugGPS_ICML23/blob/8853927dbccca74b5de45048635578ca47a64676/druggps.pt)
 
-The index file is test_index.pkl
+The index file is [test_index.pkl](https://github.com/zaixizhang/DrugGPS_ICML23/blob/8853927dbccca74b5de45048635578ca47a64676/test_index.pkl)
 
 ## Reference
 ```
